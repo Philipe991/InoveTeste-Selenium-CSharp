@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Configuration;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using InoveTeste;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -22,8 +24,7 @@ namespace SeleniumTests
         public void SetupTest()
         {
             //driver = new FirefoxDriver();
-            driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
+            driver = Comandos.GetBrowserLocal(driver, ConfigurationManager.AppSettings["browser"]);
             baseURL = "https://inoveteste.com.br/";
             verificationErrors = new StringBuilder();
         }

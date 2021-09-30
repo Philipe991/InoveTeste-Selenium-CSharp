@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -9,6 +10,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using InoveTeste.Page_Object;
 using OpenQA.Selenium.Support.PageObjects;
+using InoveTeste;
 
 namespace ST01Contato
 {
@@ -23,8 +25,7 @@ namespace ST01Contato
         [SetUp]
         public void SetupTest()
         {
-            driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
+            driver = Comandos.GetBrowserLocal(driver, ConfigurationManager.AppSettings["browser"]);
             baseURL = "https://inoveteste.com.br/";
             verificationErrors = new StringBuilder();
         }
@@ -47,38 +48,29 @@ namespace ST01Contato
         public void TheCT03EnviarMensagemTest()
         {
             // Acessa o site
-            driver.Navigate().GoToUrl(baseURL + "/contato");
+            driver.Navigate().GoToUrl(baseURL + "contato");
 
-
-            /*
             // Acessa o menu Contato
             //driver.FindElement(By.XPath("//a/span/i")).Click();
             //driver.FindElement(By.CssSelector("#mobile-menu-item-5643 > a > span")).Click();
             
             // Preenche todos os campos do formulário
             driver.FindElement(By.Name("nome")).Clear();
-            driver.FindElement(By.Name("nome")).SendKeys("Philipe");
+            driver.FindElement(By.Name("nome")).SendKeys(ConfigurationManager.AppSettings["nome"]);
             driver.FindElement(By.Name("email")).Clear();
-            driver.FindElement(By.Name("email")).SendKeys("philipe991@gmail.com");
+            driver.FindElement(By.Name("email")).SendKeys(ConfigurationManager.AppSettings["email"]);
             driver.FindElement(By.Name("assunto")).Clear();
             driver.FindElement(By.Name("assunto")).SendKeys("Teste Automação com C#");
             driver.FindElement(By.Name("mensagem")).Clear();
             driver.FindElement(By.Name("mensagem")).SendKeys("Teste Automação com C#, curso da Udemy.");
 
             // Clica no botão Enviar após preencher todos os campos obrigatórios
-            driver.FindElement(By.CssSelector("input.wpcf7-form-control.wpcf7-submit")).Click();
+            Comandos.ExecuteJavaScript(driver, "document.querySelector('input.wpcf7-form-control.wpcf7-submit').click()");
 
             // Valida a mensagem de sucesso no envio do formulário
             Thread.Sleep(10000);
             Assert.AreEqual("Falha no envio de sua mensagem. Por favor, tente mais tarde ou entre em contato com o administrador por outro método.", driver.FindElement(By.CssSelector("div.wpcf7-response-output")).Text);
 
-            */
-
-            // PageObject
-            Contato contato = new Contato();
-            PageFactory.InitElements(driver, contato);
-
-            //Assert.IsTrue(contato.name);
         }
         private bool IsElementPresent(By by)
         {

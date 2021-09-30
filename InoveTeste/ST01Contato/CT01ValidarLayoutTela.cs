@@ -9,6 +9,8 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using InoveTeste.Page_Object;
 using OpenQA.Selenium.Support.PageObjects;
+using System.Configuration;
+using InoveTeste;
 
 namespace SeleniumTests
 {
@@ -24,8 +26,7 @@ namespace SeleniumTests
         public void SetupTest()
         {
             //driver = new FirefoxDriver();
-            driver = new ChromeDriver();
-            driver.Manage().Window.Maximize();
+            driver = Comandos.GetBrowserLocal(driver, ConfigurationManager.AppSettings["browser"]);
             baseURL = "https://inoveteste.com.br/";
             verificationErrors = new StringBuilder();
         }
