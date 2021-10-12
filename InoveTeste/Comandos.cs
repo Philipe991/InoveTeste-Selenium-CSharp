@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Remote;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace InoveTeste
 
         #region Browser
 
-        public static IWebDriver GetBrowserLocal(IWebDriver driver, String browser)
+        public static RemoteWebDriver GetBrowserLocal(RemoteWebDriver driver, String browser)
         {
             switch (browser)
             {

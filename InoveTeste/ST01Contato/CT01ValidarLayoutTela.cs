@@ -11,13 +11,14 @@ using InoveTeste.Page_Object;
 using OpenQA.Selenium.Support.PageObjects;
 using System.Configuration;
 using InoveTeste;
+using OpenQA.Selenium.Remote;
 
 namespace SeleniumTests
 {
     [TestFixture]
-    public class CT0ValidarLayoutTela
+    public class CT01ValidarLayoutTela
     {
-        private IWebDriver driver;
+        private RemoteWebDriver driver;
         private StringBuilder verificationErrors;
         private string baseURL;
         private bool acceptNextAlert = true;
@@ -46,7 +47,7 @@ namespace SeleniumTests
         }
 
         [Test]
-        public void TheCT02ValidarCamposObrigatoriosTest()
+        public void TheCT0ValidarLayoutTela()
         {
             // Acessa o site
             driver.Navigate().GoToUrl(baseURL + "/contato");
@@ -59,6 +60,9 @@ namespace SeleniumTests
 
 
             // PageObject
+
+            // ## Usando PageFactory (Obsoleto) ##
+            /*
             Contato contato = new Contato();
             PageFactory.InitElements(driver, contato);
 
@@ -67,6 +71,12 @@ namespace SeleniumTests
             Assert.IsTrue(contato.assunto.Displayed);
             Assert.IsTrue(contato.mensagem.Displayed);
             Assert.IsTrue(contato.enviar.Displayed);
+            */
+
+            // Sem utilizar o PageFactory
+
+            Contato contato = new Contato(driver);
+            contato.VerificarExistenciaCampos();
 
         }
         private bool IsElementPresent(By by)

@@ -8,14 +8,17 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
+using InoveTeste.Page_Object;
 
 namespace SeleniumTests
 {
     [TestFixture]
     public class CT02ValidarCamposObrigatorios
     {
-        private IWebDriver driver;
+        private RemoteWebDriver driver;
+        private WebDriverWait wait;
         private StringBuilder verificationErrors;
         private string baseURL;
         private bool acceptNextAlert = true;
@@ -25,6 +28,11 @@ namespace SeleniumTests
         {
             //driver = new FirefoxDriver();
             driver = Comandos.GetBrowserLocal(driver, ConfigurationManager.AppSettings["browser"]);
+            // Declaração de espera implicita
+            // driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            // Declaração de espera explicita
+
             baseURL = "https://inoveteste.com.br/";
             verificationErrors = new StringBuilder();
         }
@@ -48,16 +56,26 @@ namespace SeleniumTests
         {
             // Acessa o site
             driver.Navigate().GoToUrl(baseURL + "/contato");
-            
+
             // Acessa o menu Contato
             //driver.FindElement(By.XPath("//a/span/i")).Click();
             //driver.FindElement(By.CssSelector("#mobile-menu-item-5643 > a > span")).Click();
-            
-            // Clica no botão salvar sem preencher os campos obrigatórios
-            driver.FindElement(By.CssSelector("input.wpcf7-form-control.wpcf7-submit")).Click();
+
+            // Clica no botão salvar sem preencher os campos obrigatórios - Usando o PageFactory (Obsoleto)
+            // driver.FindElement(By.CssSelector("input.wpcf7-form-control.wpcf7-submit")).Click();
+
+            // Usando o PageObject mais recente para clicar no botão enviar
+            Contato contato = new Contato(driver);
+            contato.ClicarBotaoEnviar();
 
             // Validar as mensagens de crítica dos campos obrigatórios
-            Thread.Sleep(10000);
+
+            // Comando Sleep comentado por causa da espera implicita
+            //Thread.Sleep(10000);
+
+            // Declaração de espera explicita
+            wait.Until(ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.CssSelector("span.wpcf7-not-valid-tip")));
+
             Assert.AreEqual("Por favor, preencha o campo obrigatório.", driver.FindElement(By.CssSelector("span.wpcf7-not-valid-tip")).Text);
             Assert.AreEqual("Por favor, preencha o campo obrigatório.", driver.FindElement(By.CssSelector("span.wpcf7-form-control-wrap.email > span.wpcf7-not-valid-tip")).Text);
             Assert.AreEqual("Por favor, preencha o campo obrigatório.", driver.FindElement(By.CssSelector("span.wpcf7-form-control-wrap.assunto > span.wpcf7-not-valid-tip")).Text);

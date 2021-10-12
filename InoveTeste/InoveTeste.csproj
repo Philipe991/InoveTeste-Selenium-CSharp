@@ -66,8 +66,8 @@
     <Compile Include="Page Object\Contato.cs" />
     <Compile Include="ST01Contato\CT01ValidarLayoutTela.cs" />
     <Compile Include="ST01Contato\CT02ValidarCamposObrigatorios.cs" />
-    <Compile Include="ST01Contato\CT03EnviarMensagem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ST01Contato\CT03ValidarEnvioDeMensagem.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
